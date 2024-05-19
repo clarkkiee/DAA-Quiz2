@@ -36,6 +36,8 @@ class Board():
             for col in range(index[1] - 1, index[1] + 2):
                 outOfBounds = row < 0 or row >= self.size[0] or col < 0 or col >= self.size[1]
                 same = row == index[0] and col == index[1]
+                if (same or outOfBounds):
+                    continue
                 neighbors.append(self.getPiece((row, col)))
         return neighbors
     
@@ -48,6 +50,10 @@ class Board():
     def handleClick(self, piece, flag):
         if (piece.getClicked() or (not flag and piece.getFlagged())):
             return
+        if (flag):
+            piece.toggleFlag()
+            return
+        piece.click()
         if (piece.getHasBomb()):
             self.lost = True
             return
@@ -56,7 +62,7 @@ class Board():
         if (piece.getNumAround() != 0):
             return
         for neighbor in piece.getNeighbors():
-            if (neighbor.getHasBomb() and neighbor.getClicked()):
+            if (not neighbor.getHasBomb() and not neighbor.getClicked()):
                 self.handleClick(neighbor, False)
 
     def getLost(self):
