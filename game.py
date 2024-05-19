@@ -59,3 +59,12 @@ class Game():
         else:
             string = "flag" if piece.getFlagged() else "empty-block"
         return self.images[string]
+    
+    def handleClick(self, position, rightClick):
+        # Jika kalah, maka tidak bisa melakukan click
+        if (self.board.getLost()):
+            return
+        index = position[1] // self.pieceSize[1], position[0] // self.pieceSize[0]
+        # print(index)
+        piece = self.board.getPiece(index)
+        self.board.handleClick(piece, rightClick)
