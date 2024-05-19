@@ -16,6 +16,8 @@ class Board():
             row = []
             for col in range(self.size[1]):
                 hasBomb = random() < self.prob
+                if (not hasBomb):
+                    self.numNonBombs += 1
                 piece = Piece(hasBomb)
                 row.append(piece)
             self.board.append(row)
